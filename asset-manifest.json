@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.css": "/excel-to-json.github.io/static/css/main.073c9b0a.css",
-    "main.js": "/excel-to-json.github.io/static/js/main.530fa6ff.js",
-    "index.html": "/excel-to-json.github.io/index.html",
-    "main.073c9b0a.css.map": "/excel-to-json.github.io/static/css/main.073c9b0a.css.map",
-    "main.530fa6ff.js.map": "/excel-to-json.github.io/static/js/main.530fa6ff.js.map"
+    "main.css": "/excel-to-json/static/css/main.073c9b0a.css",
+    "main.js": "/excel-to-json/static/js/main.530fa6ff.js",
+    "index.html": "/excel-to-json/index.html",
+    "main.073c9b0a.css.map": "/excel-to-json/static/css/main.073c9b0a.css.map",
+    "main.530fa6ff.js.map": "/excel-to-json/static/js/main.530fa6ff.js.map"
   },
   "entrypoints": [
     "static/css/main.073c9b0a.css",

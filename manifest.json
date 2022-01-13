@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "excel-to-json",
+  "name": "convert-excel-to-json",
   "icons": [
     {
       "src": "favicon.ico",
