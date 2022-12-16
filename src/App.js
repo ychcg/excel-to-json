@@ -1,8 +1,12 @@
 import "./App.css";
 import { useState } from "react";
 import xlsx from "xlsx";
+import cryptoJs from "crypto-js";
+
 function App() {
   const [data, setData] = useState(null);
+  const [key, setKey] = useState("");
+  const [wantEncrypt, setWantEncrypt] = useState(false);
 
   const readUploadFile = (e) => {
     e.preventDefault();
@@ -23,6 +27,21 @@ function App() {
     } else {
       setData(null);
     }
+  };
+
+  const encryptJS = (data, key) => {
+    if (!key.trim()) {
+      window.alert("there is no key");
+      return null;
+    }
+    const stringifyData =
+      typeof data === "string" ? data : JSON.stringify(data);
+
+    return cryptoJs.AES.encrypt(stringifyData, key).toString();
+  };
+
+  const downloadExcel = () => {
+    generateBlob(data);
   };
 
   const downloadChCsm = () => {
@@ -55,11 +74,13 @@ function App() {
   };
 
   const generateBlob = (d) => {
+    const jsonD = wantEncrypt ? encryptJS(d, key) : d;
+
     const a = document.createElement("a");
-    const blob1 = new Blob([d], {
+    const blob = new Blob([jsonD], {
       type: "application/json",
     });
-    a.href = URL.createObjectURL(blob1);
+    a.href = URL.createObjectURL(blob);
     a.download = "excel.json";
     a.click();
   };
@@ -71,11 +92,40 @@ function App() {
         <div>
           <input type="file" onChange={readUploadFile} />
         </div>
-        {data && (
-          <div style={{ marginTop: 20 }}>
-            <p>click if you have permission !</p>
-            <button onClick={downloadChCsm}>FOR CH-CSM BUTTON</button>
+        <div style={{ marginTop: 20 }}>
+          <div>
+            <label style={{ fontSize: 16, cursor: "pointer" }}>
+              Do you want to encrypt the data?
+              <input
+                type="checkbox"
+                checked={wantEncrypt}
+                onChange={(e) => {
+                  setWantEncrypt(!wantEncrypt);
+                }}
+              />
+            </label>
           </div>
+          {wantEncrypt && (
+            <input
+              type="text"
+              placeholder="encrypt-key"
+              value={key}
+              onChange={(e) => {
+                setKey(e.target.value);
+              }}
+            />
+          )}
+        </div>
+        {data && (
+          <>
+            <div style={{ marginTop: 20 }}>
+              <button onClick={downloadExcel}>Download Converted Excel</button>
+            </div>
+            <div style={{ marginTop: 20 }}>
+              <p>Click if you have permission !</p>
+              <button onClick={downloadChCsm}>FOR CH-CSM BUTTON</button>
+            </div>
+          </>
         )}
       </header>
     </div>
