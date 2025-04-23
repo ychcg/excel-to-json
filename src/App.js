@@ -16,11 +16,31 @@ function App() {
       reader.onload = (e) => {
         const data = e.target.result;
         const workbook = xlsx.read(data);
-        const sheetName = workbook.SheetNames[0];
-        const worksheet = workbook.Sheets[sheetName];
-        const json = JSON.stringify(xlsx.utils.sheet_to_json(worksheet));
+        console.log("Workbook 정보:", workbook.SheetNames);
 
-        setData(json);
+        const result = {};
+
+        // 모든 시트를 처리
+        workbook.SheetNames.forEach((sheetName) => {
+          const worksheet = workbook.Sheets[sheetName];
+          console.log(`시트 [${sheetName}] 구조:`, worksheet);
+
+          // 각 시트의 데이터를 JSON으로 변환하여 시트 이름을 키로 저장
+          // 헤더 사용 여부 옵션, 빈 셀 처리, raw 값 사용 옵션 추가
+          const sheetData = xlsx.utils.sheet_to_json(worksheet, {
+            defval: "", // 빈 셀에 기본값 지정
+            raw: true, // 원시 값 사용
+            blankrows: false, // 빈 행 제외
+          });
+
+          console.log(`시트 [${sheetName}] 데이터:`, sheetData);
+          result[sheetName] = sheetData;
+        });
+
+        // 결과를 JSON 문자열로 변환
+        const jsonResult = JSON.stringify(result);
+        console.log("변환된 데이터:", jsonResult);
+        setData(jsonResult);
       };
 
       reader.readAsArrayBuffer(e.target.files[0]);
